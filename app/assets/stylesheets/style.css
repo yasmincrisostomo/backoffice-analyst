@@ -1,22 +1,42 @@
-body {
-  font-family: 'Montserrat', sans-serif;
-  background-color: #F5F5F5;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-header {
-  background-color: #333;
-  color: #FFF;
-  padding: 20px;
-  text-align: center;
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: black;
+}
+
+.logo {
+  position: absolute;
+  top: 0;
+  width: 150px;
+  height: auto;
+  margin: 30px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #3C41F5;
+  padding: 30px;
+}
+
+.header p {
+  color: #FFFFFF;
+  font-size: smaller;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 40px;
 }
 
 main {
-  margin: 20px auto;
+  margin: 60px auto;
   max-width: 800px;
-}
-
-h2 {
-  margin-top: 30px;
 }
 
 .table {
@@ -26,7 +46,7 @@ h2 {
 }
 
 .table th {
-  background-color: #333;
+  background-color: black;
   color: #FFF;
   font-weight: bold;
   padding: 10px;
@@ -44,4 +64,82 @@ h2 {
   color: #FFF;
   padding: 20px;
   text-align: center;
+}
+
+.metric-cards-container {
+  justify-content: space-between;
+  margin-top: 50px;
+  margin: 0 auto;
+  width: 80%;
+}
+
+.metric-card {
+  background: rgb(16, 16, 16);
+  border-radius: 8px;
+  display: flex;
+  flex-flow: column nowrap;
+  padding: 32px;
+  margin: 30px auto;
+  width: 100%;
+}
+
+.metric-card h2, .metric-card h4 {
+  color: #FFFFFF;
+  font-size: 24px;
+  font-weight: 300;
+  margin-bottom: 16px;
+}
+
+.metric-card p {
+  color: #FFFFFF;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: left;
+  margin: 0;
+  font-style: italic;
+}
+
+span.time {
+  background-color: #3C41F5;
+}
+
+.search-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+  border-radius: 25px;
+  background-color: #F2F2F2;
+  padding: 10px;
+}
+
+.search-form label {
+  font-size: 16px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.search-form input[type="text"] {
+  border: none;
+  outline: none;
+  font-size: 16px;
+  padding: 10px;
+  flex: 1;
+}
+
+.search-form button[type="submit"] {
+  border: none;
+  outline: none;
+  background-color: #3C41F5;
+  color: #FFFFFF;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.search-form button[type="submit"]:hover {
+  background-color: #2328B6;
 }
