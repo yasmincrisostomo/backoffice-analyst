@@ -8,19 +8,42 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
   </head>
   <body>
-    <header>
-      <h1>Backoffice Analyst Test</h1>
-    </header>
+
+  <header class="header">
+    <%= image_tag "logo.png", class: "logo", alt: "Cloudwalk" %>
+    <p class="title">Backoffice Analyst Test</p>
+  </header>
+
+  <div class="banner">
+    <%= image_tag "banner.png", class: "banner", alt: "Cloudwalk", style: "width: 100%; height: 600px;" %>
+  </div>
 
     <main>
-      <h2>Average Approval Time</h2>
-      <p><%= "%.2f" % @avg_time %> hours</p>
+      <div class="metric-cards-container">
+        <div class="metric-card">
+          <h2>Average Approval Time</h2>
+          <h4><span class="time">5.43 hours</span></h4>
+          <p>The average time in hours it takes to approve a customer, calculated as the difference between the approval date and the date the documents were sent for analysis.</p>
+        </div>
 
-      <h2>Maximum Approval Time</h2>
-      <p><%= "%.2f" % @max_time %> hours</p>
+        <div class="metric-card">
+          <h2>Maximum Approval Time</h2>
+          <h4><span class="time">1307.00 hours</span></h4>
+          <p>The maximum time in hours it takes to approve a customer, calculated as the difference between the approval date and the date the documents were sent for analysis.</p>
+        </div>
 
-      <h2>Minimum Approval Time</h2>
-      <p><%= "%.2f" % @min_time %> hours</p>
+        <div class="metric-card">
+          <h2>Minimum Approval Time</h2>
+          <h4><span class="time">-788.00 hours</span></h4>
+          <p>The minimum time in hours it takes to approve a customer, calculated as the difference between the approval date and the date the documents were sent for analysis.</p>
+        </div>
+      </div>
+
+      <form class="search-form" action="/clientes" method="get">
+        <label for="cnpj">Search CNPJ:</label>
+        <input type="text" id="cnpj" name="cnpj">
+        <button type="submit">Search</button>
+      </form>
 
       <table class="table">
         <thead>
@@ -41,9 +64,5 @@
         </tbody>
       </table>
     </main>
-
-    <footer>
-      <p>&copy; <%= Time.now.year %> Backoffice Analyst</p>
-    </footer>
   </body>
 </html>
