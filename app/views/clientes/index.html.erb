@@ -1,0 +1,28 @@
+<h2>Average Approval Time</h2>
+<p><%= "%.2f" % @avg_time %> hours</p>
+
+<h2>Maximum Approval Time</h2>
+<p><%= "%.2f" % @max_time %> hours</p>
+
+<h2>Minimum Approval Time</h2>
+<p><%= "%.2f" % @min_time %> hours</p>
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>CNPJ</th>
+      <th>Date of Purchase</th>
+      <th>Approval Time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @results.each do |row| %>
+      <tr>
+        <td><%= row["cnpj"] %></td>
+        <td><%= row["date_of_purchase"] %></td>
+        <td><%= "#{row["approval_time_hours"].to_i} hours #{row["approval_time_minutes"].to_i} minutes" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
