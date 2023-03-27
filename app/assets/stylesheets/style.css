@@ -144,28 +144,60 @@ span.time {
   justify-content: center;
   align-items: center;
   margin: 30px;
-  color: #FFF;
+  color: #fff;
 }
 
 .pagination a {
-  color: #FFF;
-  background-color: #3C41F5;
+  display: inline-block;
   padding: 10px 15px;
-  border-radius: 5px;
-  text-decoration: none;
   margin-right: 5px;
+  border-radius: 5px;
+  background-color: #3c41f5;
+  color: #fff;
+  text-decoration: none;
   transition: all 0.3s ease;
 }
 
 .pagination a:hover {
-  background-color: #2328B6;
+  background-color: #2328b6;
 }
 
 .page.current {
-  color: #3C41F5;
-  background-color: #FFFFFF;
+  display: inline-block;
   padding: 10px 15px;
-  border-radius: 5px;
-  text-decoration: none;
   margin-right: 5px;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #3c41f5;
+  text-decoration: none;
+}
+
+.questions, .answer {
+  margin: 60px auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.questions details {
+  background: #3C41F5;
+  color: #FFFFFF;
+  text-align: center;
+  border-radius: 8px;
+  padding: 32px;
+  margin: 20px auto;
+  width: 800px;
+}
+
+.questions details:first-of-type {
+  margin-top: 0;
+}
+
+.answer details {
+  background: rgb(16, 16, 16);
+  color: #FFFFFF;
+  text-align: center;
+  border-radius: 8px;
+  padding: 32px;
+  margin: 20px auto;
+  width: 800px;
 }

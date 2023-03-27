@@ -9,62 +9,97 @@
   </head>
 
   <body>
-  <header class="header">
-    <%= image_tag "logo.png", class: "logo", alt: "Cloudwalk" %>
-    <p class="title">Backoffice Analyst Test</p>
-  </header>
+    <header class="header">
+      <%= image_tag "logo.png", class: "logo", alt: "Cloudwalk" %>
+      <p class="title">Backoffice Analyst Test</p>
+    </header>
 
-  <div class="banner">
-    <%= image_tag "banner.png", class: "banner", alt: "Cloudwalk", style: "width: 100%; height: 600px;" %>
-  </div>
-
-  <div class="metric-cards-container">
-    <div class="metric-card">
-      <h2>Average Approval Time</h2>
-      <h4><span class="time">5.43 hours</span></h4>
-      <p>The average time in hours it takes to approve a customer, calculated as the difference between the approval date and the date the documents were sent for analysis.</p>
+    <div class="banner">
+      <%= image_tag "banner.png", class: "banner", alt: "Cloudwalk", style: "width: 100%; height: 600px;" %>
     </div>
 
-    <div class="metric-card">
-      <h2>Maximum Approval Time</h2>
-      <h4><span class="time">1307.00 hours</span></h4>
-      <p>The maximum time in hours it takes to approve a customer, calculated as the difference between the approval date and the date the documents were sent for analysis.</p>
+    <div class="questions">
+    <details>
+        <summary>Money flow, information flow and main players</summary>
+        <div>
+          The acquirer market is a complex ecosystem that involves several players, including merchants, acquirers, card associations, issuers, and payment processors. The money flow in the acquirer market starts with a customer making a payment using a payment card at a merchant. The merchant sends the payment information to the acquirer, which then forwards it to the card association, such as Visa or Mastercard. The card association communicates with the issuer of the payment card to verify the transaction and determine whether there are sufficient funds to complete the payment. The issuer sends the authorization response back to the card association, which then relays it to the acquirer and the merchant. The acquirer settles the payment with the merchant, and the issuer settles the payment with the acquirer. 
+          The information flow in the acquirer market is equally important. Merchants, acquirers, card associations, and issuers need to communicate and share data in real-time to ensure the security and reliability of the payment process. The acquirer market also involves several layers of regulations and compliance requirements to ensure the protection of consumer data and prevent fraud.
+        </div>
+      </details>
+
+      <details>
+        <summary>Acquirer, sub-acquirer and payment gateway</summary>
+        <div>
+          An acquirer is a financial institution that enables merchants to accept electronic payments through payment cards. A sub-acquirer is an entity that facilitates the payment process on behalf of an acquirer. A payment gateway is a technology platform that connects merchants to acquirers and payment networks to process electronic payments.
+          The money flow in the acquirer market for sub-acquirers and payment gateways is similar to that of acquirers, with the difference being that they act as intermediaries between merchants and acquirers. The information flow is also similar, but sub-acquirers and payment gateways may have additional security and compliance requirements that they need to adhere to.
+        </div>
+      </details>
+
+      <details>
+        <summary>KYC (Know Your Customer)</summary>
+        <div>
+          KYC (Know Your Customer) is the process of verifying the identity of a customer to ensure that they are who they claim to be. It involves collecting and verifying personal information, such as name, address, date of birth, and government-issued ID. KYC is important to the company and the entire payment industry because it helps prevent fraud, money laundering, and other illegal activities. By verifying the identity of customers, companies can reduce their risk and comply with regulatory requirements. KYC is also essential for building trust with customers, as it demonstrates a commitment to protecting their data and preventing fraud.
+        </div>
+      </details>
     </div>
 
-    <div class="metric-card">
-      <h2>Minimum Approval Time</h2>
-      <h4><span class="time">-788.00 hours</span></h4>
-      <p>The minimum time in hours it takes to approve a customer, calculated as the difference between the approval date and the date the documents were sent for analysis.</p>
-    </div>
-  </div>
+    <main>
+      <div class="table-container">
+          <form class="search-form" action="/" method="get">
+            <label for="cnpj">Search CNPJ:</label>
+            <input type="text" id="cnpj" name="cnpj">
+            <button type="submit">Search</button>
+          </form>
 
-  <div class="table-container">
-      <form class="search-form" action="/" method="get">
-        <label for="cnpj">Search CNPJ:</label>
-        <input type="text" id="cnpj" name="cnpj">
-        <button type="submit">Search</button>
-      </form>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>CNPJ</th>
+                <th>Date of Purchase</th>
+                <th>Approval Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @results.each do |row| %>
+                <tr>
+                  <td><%= row["cnpj"] %></td>
+                  <td><%= Time.parse(row["date_of_purchase"]).strftime("%d/%m/%Y %H:%M") %></td>
+                  <td><%= "#{row["approval_time_hours"].to_i} hours #{row["approval_time_minutes"].to_i} minutes" %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
 
-      <table class="table">
-        <thead>
-          <tr>
-            <th>CNPJ</th>
-            <th>Date of Purchase</th>
-            <th>Approval Time</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @results.each do |row| %>
-            <tr>
-              <td><%= row["cnpj"] %></td>
-              <td><%= Time.parse(row["date_of_purchase"]).strftime("%d/%m/%Y %H:%M") %></td>
-              <td><%= "#{row["approval_time_hours"].to_i} hours #{row["approval_time_minutes"].to_i} minutes" %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
+          <%= paginate @results %>
+      </div>
 
-      <%= paginate @results %>
-    </div>
+      <div class="metric-cards-container">
+        <div class="metric-card">
+          <h2>Average Approval Time</h2>
+          <h4><span class="time">5.43 hours</span></h4>
+          <p>The average time in hours it takes to approve a customer, calculated as the difference between the approval date and the date the documents were sent for analysis.</p>
+        </div>
+
+        <div class="metric-card">
+          <h2>Maximum Approval Time</h2>
+          <h4><span class="time">1307.00 hours</span></h4>
+          <p>The maximum time in hours it takes to approve a customer, calculated as the difference between the approval date and the date the documents were sent for analysis.</p>
+        </div>
+
+        <div class="metric-card">
+          <h2>Minimum Approval Time</h2>
+          <h4><span class="time">-788.00 hours</span></h4>
+          <p>The minimum time in hours it takes to approve a customer, calculated as the difference between the approval date and the date the documents were sent for analysis.</p>
+        </div>
+      </div>
+    </main>
+
+    <div class="answer">
+    <details>
+        <summary>Why there is a negative number?</summary>
+        <div>
+          
+        </div>
+      </details>  
   </body>
 </html>
