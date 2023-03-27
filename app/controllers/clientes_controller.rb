@@ -1,37 +1,41 @@
 class ClientesController < ApplicationController
   def index
-    @results = ActiveRecord::Base.connection.exec_query("
-      SELECT c.cnpj,
-             s_approved.data_horario_do_status AS date_of_purchase,
-             strftime('%s', s_approved.data_horario_do_status) - strftime('%s', s_pending.data_horario_do_status) AS approval_time_seconds,
-             (strftime('%s', s_approved.data_horario_do_status) - strftime('%s', s_pending.data_horario_do_status))/3600 AS approval_time_hours,
-             ((strftime('%s', s_approved.data_horario_do_status) - strftime('%s', s_pending.data_horario_do_status)) % 3600)/60 AS approval_time_minutes
-      FROM clientes c
-      JOIN statuses s_pending ON c.user_id = s_pending.user_id AND s_pending.status = 'pending_kyc'
-      JOIN statuses s_approved ON c.user_id = s_approved.user_id AND s_approved.status = 'approved'
-    ")
+    @query = params[:cnpj]
 
-    @avg_time = ActiveRecord::Base.connection.exec_query("
-      SELECT AVG(strftime('%s', s_approved.data_horario_do_status) - strftime('%s', s_pending.data_horario_do_status))/3600 AS avg_approval_time_hours
-      FROM clientes c
-      JOIN statuses s_pending ON c.user_id = s_pending.user_id AND s_pending.status = 'pending_kyc'
-      JOIN statuses s_approved ON c.user_id = s_approved.user_id AND s_approved.status = 'approved'
-    ").first['avg_approval_time_hours']
+    @results = Cliente.select("clientes.cnpj, statuses_pending.data_horario_do_status as date_of_purchase,
+              (strftime('%s', statuses_approved.data_horario_do_status) - strftime('%s', statuses_pending.data_horario_do_status))/3600 as approval_time_hours,
+              ((strftime('%s', statuses_approved.data_horario_do_status) - strftime('%s', statuses_pending.data_horario_do_status)) % 3600)/60 as approval_time_minutes")
+                      .joins("JOIN statuses statuses_pending ON clientes.user_id = statuses_pending.user_id AND statuses_pending.status = 'pending_kyc' 
+                              JOIN statuses statuses_approved ON clientes.user_id = statuses_approved.user_id AND statuses_approved.status = 'approved'")
+                      .where(where_clause)
+                      .order('statuses_pending.data_horario_do_status DESC')
 
-    @max_time = ActiveRecord::Base.connection.exec_query("
-      SELECT MAX(strftime('%s', s_approved.data_horario_do_status) - strftime('%s', s_pending.data_horario_do_status))/3600 AS max_approval_time_hours
-      FROM clientes c
-      JOIN statuses s_pending ON c.user_id = s_pending.user_id AND s_pending.status = 'pending_kyc'
-      JOIN statuses s_approved ON c.user_id = s_approved.user_id AND s_approved.status = 'approved'
-    ").first['max_approval_time_hours']
+    @avg_time = Cliente.joins(:statuses)
+                       .where(where_clause)
+                       .where("statuses.status = 'pending_kyc' OR statuses.status = 'approved'")
+                       .group(:user_id)
+                       .average("(strftime('%s', statuses.data_horario_do_status))")
 
-    @min_time = ActiveRecord::Base.connection.exec_query("
-      SELECT MIN(strftime('%s', s_approved.data_horario_do_status) - strftime('%s', s_pending.data_horario_do_status))/3600 AS min_approval_time_hours
-      FROM clientes c
-      JOIN statuses s_pending ON c.user_id = s_pending.user_id AND s_pending.status = 'pending_kyc'
-      JOIN statuses s_approved ON c.user_id = s_approved.user_id AND s_approved.status = 'approved'
-    ").first['min_approval_time_hours']
+    @max_time = Cliente.joins(:statuses)
+                       .where(where_clause)
+                       .where("statuses.status = 'pending_kyc' OR statuses.status = 'approved'")
+                       .group(:user_id)
+                       .maximum("(strftime('%s', statuses.data_horario_do_status))")
+
+    @min_time = Cliente.joins(:statuses)
+                       .where(where_clause)
+                       .where("statuses.status = 'pending_kyc' OR statuses.status = 'approved'")
+                       .group(:user_id)
+                       .minimum("(strftime('%s', statuses.data_horario_do_status))")
 
     render :index
+  end
+
+  private
+
+  def where_clause
+    return "clientes.cnpj LIKE '%#{@query}%'" if @query
+
+    '1=1'
   end
 end
