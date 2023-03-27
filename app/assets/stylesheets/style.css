@@ -2,10 +2,10 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
 }
 
 body {
-  font-family: 'Montserrat', sans-serif;
   background-color: black;
 }
 
@@ -34,11 +34,6 @@ body {
   margin: 40px;
 }
 
-main {
-  margin: 60px auto;
-  max-width: 800px;
-}
-
 .table {
   border-collapse: collapse;
   margin-top: 30px;
@@ -46,7 +41,7 @@ main {
 }
 
 .table th {
-  background-color: black;
+  background-color: #3C41F5;
   color: #FFF;
   font-weight: bold;
   padding: 10px;
@@ -59,44 +54,41 @@ main {
   padding: 10px;
 }
 
-.footer {
-  background-color: #333;
-  color: #FFF;
-  padding: 20px;
-  text-align: center;
-}
-
 .metric-cards-container {
-  justify-content: space-between;
-  margin-top: 50px;
-  margin: 0 auto;
+  display: flex;
   width: 80%;
+  margin: 60px auto;
+  max-width: 1200px;
 }
 
 .metric-card {
   background: rgb(16, 16, 16);
+  color: #FFFFFF;
+  text-align: center;
   border-radius: 8px;
   display: flex;
   flex-flow: column nowrap;
   padding: 32px;
-  margin: 30px auto;
+  margin: 30px;
   width: 100%;
 }
 
-.metric-card h2, .metric-card h4 {
-  color: #FFFFFF;
+.metric-card h2,
+.metric-card h4 {
   font-size: 24px;
-  font-weight: 300;
   margin-bottom: 16px;
 }
 
 .metric-card p {
-  color: #FFFFFF;
-  font-size: 16px;
-  font-weight: bold;
-  text-align: left;
-  margin: 0;
-  font-style: italic;
+  font-size: 14px;
+}
+
+.table-container {
+  justify-content: space-between;
+  margin-top: 50px;
+  width: 80%;
+  margin: 60px auto;
+  max-width: 800px;
 }
 
 span.time {
@@ -107,9 +99,9 @@ span.time {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 50px;
+  margin: 50px 0;
   border-radius: 25px;
-  background-color: #F2F2F2;
+  background-color: #FFFFFF;
   padding: 10px;
 }
 
@@ -120,11 +112,14 @@ span.time {
 }
 
 .search-form input[type="text"] {
+  background-color: #F2F2F2;
   border: none;
   outline: none;
   font-size: 16px;
   padding: 10px;
   flex: 1;
+  border-radius: 5px;
+  margin-right: 10px;
 }
 
 .search-form button[type="submit"] {
@@ -142,4 +137,35 @@ span.time {
 
 .search-form button[type="submit"]:hover {
   background-color: #2328B6;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30px;
+  color: #FFF;
+}
+
+.pagination a {
+  color: #FFF;
+  background-color: #3C41F5;
+  padding: 10px 15px;
+  border-radius: 5px;
+  text-decoration: none;
+  margin-right: 5px;
+  transition: all 0.3s ease;
+}
+
+.pagination a:hover {
+  background-color: #2328B6;
+}
+
+.page.current {
+  color: #3C41F5;
+  background-color: #FFFFFF;
+  padding: 10px 15px;
+  border-radius: 5px;
+  text-decoration: none;
+  margin-right: 5px;
 }

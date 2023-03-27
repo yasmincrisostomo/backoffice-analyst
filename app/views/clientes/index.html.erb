@@ -7,8 +7,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
   </head>
-  <body>
 
+  <body>
   <header class="header">
     <%= image_tag "logo.png", class: "logo", alt: "Cloudwalk" %>
     <p class="title">Backoffice Analyst Test</p>
@@ -18,28 +18,28 @@
     <%= image_tag "banner.png", class: "banner", alt: "Cloudwalk", style: "width: 100%; height: 600px;" %>
   </div>
 
-    <main>
-      <div class="metric-cards-container">
-        <div class="metric-card">
-          <h2>Average Approval Time</h2>
-          <h4><span class="time">5.43 hours</span></h4>
-          <p>The average time in hours it takes to approve a customer, calculated as the difference between the approval date and the date the documents were sent for analysis.</p>
-        </div>
+  <div class="metric-cards-container">
+    <div class="metric-card">
+      <h2>Average Approval Time</h2>
+      <h4><span class="time">5.43 hours</span></h4>
+      <p>The average time in hours it takes to approve a customer, calculated as the difference between the approval date and the date the documents were sent for analysis.</p>
+    </div>
 
-        <div class="metric-card">
-          <h2>Maximum Approval Time</h2>
-          <h4><span class="time">1307.00 hours</span></h4>
-          <p>The maximum time in hours it takes to approve a customer, calculated as the difference between the approval date and the date the documents were sent for analysis.</p>
-        </div>
+    <div class="metric-card">
+      <h2>Maximum Approval Time</h2>
+      <h4><span class="time">1307.00 hours</span></h4>
+      <p>The maximum time in hours it takes to approve a customer, calculated as the difference between the approval date and the date the documents were sent for analysis.</p>
+    </div>
 
-        <div class="metric-card">
-          <h2>Minimum Approval Time</h2>
-          <h4><span class="time">-788.00 hours</span></h4>
-          <p>The minimum time in hours it takes to approve a customer, calculated as the difference between the approval date and the date the documents were sent for analysis.</p>
-        </div>
-      </div>
+    <div class="metric-card">
+      <h2>Minimum Approval Time</h2>
+      <h4><span class="time">-788.00 hours</span></h4>
+      <p>The minimum time in hours it takes to approve a customer, calculated as the difference between the approval date and the date the documents were sent for analysis.</p>
+    </div>
+  </div>
 
-      <form class="search-form" action="/clientes" method="get">
+  <div class="table-container">
+      <form class="search-form" action="/" method="get">
         <label for="cnpj">Search CNPJ:</label>
         <input type="text" id="cnpj" name="cnpj">
         <button type="submit">Search</button>
@@ -57,12 +57,14 @@
           <% @results.each do |row| %>
             <tr>
               <td><%= row["cnpj"] %></td>
-              <td><%= row["date_of_purchase"] %></td>
+              <td><%= Time.parse(row["date_of_purchase"]).strftime("%d/%m/%Y %H:%M") %></td>
               <td><%= "#{row["approval_time_hours"].to_i} hours #{row["approval_time_minutes"].to_i} minutes" %></td>
             </tr>
           <% end %>
         </tbody>
       </table>
-    </main>
+
+      <%= paginate @results %>
+    </div>
   </body>
 </html>
