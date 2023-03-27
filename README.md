@@ -1,24 +1,49 @@
-# README
+## **CloudWalk Backoffice Analyst Test**
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+🎯 This repository contains a Ruby on Rails application that provides solutions to the tasks of the CloudWalk Backoffice Analyst Test. The application is designed to test the candidate's understanding of the payments industry and their ability to analyze data using SQL.
 
-Things you may want to cover:
+#### **🔧 Prerequisites:**
+Before running the application, you must have the following installed:
 
-* Ruby version
+- Ruby 3.1.3
+- Rails 7.0.4.3
+- SQLite
 
-* System dependencies
+#### **🔧 Installation:**
+To run the application, perform the following steps:
 
-* Configuration
+1. Clone the repository:
+```
+git clone git@github.com:yasmincrisostom/backoffice-analyst.git
+```
+2. Change to the repository directory:
+```
+cd backoffice-analyst
+```
+3. Install the required gems:
+```
+bundle install
+```
+4. Create the database:
+```
+rails db:create
+```
+5. Run the database migrations:
+```
+rails db:migrate
+```
+6. Start the application:
+```
+rails server
+```
+7. Open your web browser and navigate to http://localhost:3000 to view the application.
 
-* Database creation
+#### **🔧 Results:**
+The application provides solutions to the tasks of the CloudWalk Backoffice Analyst Test, including:
 
-* Database initialization
+- A list of all the CNPJs, the dates of purchase, and how long it took to approve each merchant (in hours and in minutes).
+- The average time of approval.
+- The maximum time of approval.
+- The minimum time of approval.
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+The results are displayed in an easy-to-read table that can be sorted and filtered.
