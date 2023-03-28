@@ -76,22 +76,23 @@
       <div class="metric-cards-container">
         <div class="metric-card">
           <h2>Average Approval Time</h2>
-          <h4><span class="time">5.43 hours</span></h4>
-          <p>The average time in hours it takes to approve a customer, calculated as the difference between the approval date and the date the documents were sent for analysis.</p>
+          <h4><span class="time"><%= @avg_time %></span></h4>
+          <p>The average time it took to approve a customer.</p>
         </div>
 
         <div class="metric-card">
           <h2>Maximum Approval Time</h2>
-          <h4><span class="time">1307.00 hours</span></h4>
-          <p>The maximum time in hours it takes to approve a customer, calculated as the difference between the approval date and the date the documents were sent for analysis.</p>
+          <h4><span class="time"><%= @max_time %></span></h4>
+          <p>The maximum time it took to approve a customer.</p>
         </div>
 
         <div class="metric-card">
           <h2>Minimum Approval Time</h2>
-          <h4><span class="time">-788.00 hours</span></h4>
-          <p>The minimum time in hours it takes to approve a customer, calculated as the difference between the approval date and the date the documents were sent for analysis.</p>
+          <h4><span class="time"><%= @min_time %></span></h4>
+          <p>The minimum time it took to approve a customer.</p>
         </div>
       </div>
+
     </main>
 
     <div class="answer">
