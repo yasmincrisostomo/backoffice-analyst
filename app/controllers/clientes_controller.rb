@@ -3,13 +3,18 @@ class ClientesController < ApplicationController
   before_action :set_results, only: [:index]
 
   def index
-    @query = params[:cnpj]
+    @results = set_results
+    @avg_time = set_avg_time
+    @max_time = set_max_time
+    @min_time = set_min_time
+
     render :index
   end
 
   private
 
   def set_results
+    @query = params[:cnpj]
     @results = Cliente.select("clientes.cnpj, statuses_pending.data_horario_do_status as date_of_purchase,
                             (strftime('%s', statuses_approved.data_horario_do_status) - strftime('%s', statuses_pending.data_horario_do_status))/3600 as approval_time_hours,
                             ((strftime('%s', statuses_approved.data_horario_do_status) - strftime('%s', statuses_pending.data_horario_do_status)) % 3600)/60 as approval_time_minutes")
@@ -17,31 +22,9 @@ class ClientesController < ApplicationController
                               JOIN (SELECT user_id, MAX(data_horario_do_status) as max_data_horario_do_status FROM statuses WHERE status = 'approved' GROUP BY user_id) last_approved
                               ON clientes.user_id = last_approved.user_id
                               JOIN statuses statuses_approved ON clientes.user_id = statuses_approved.user_id AND statuses_approved.status = 'approved' AND statuses_approved.data_horario_do_status = last_approved.max_data_horario_do_status")
-                      .where(where_clause)
+                      .where("clientes.cnpj LIKE '%#{@query}%'")
                       .order('statuses_pending.data_horario_do_status DESC')
-                      .page(params[:page])
-
-    set_avg_time
-    set_max_time
-    set_min_time
-  end
-
-  def where_clause
-    where = '1=1'
-    where += " AND clientes.cnpj LIKE '%#{@query}%'" if @query
-    where += " AND statuses_pending.id IN (
-                    SELECT MAX(id)
-                    FROM statuses
-                    WHERE status = 'pending_kyc'
-                    GROUP BY user_id
-                )"
-    where += " AND statuses_approved.id IN (
-                    SELECT MAX(id)
-                    FROM statuses
-                    WHERE status = 'approved'
-                    GROUP BY user_id
-                )"
-    where
+                      .page(params[:page]).per(10)
   end
 
   def set_avg_time
@@ -52,9 +35,7 @@ class ClientesController < ApplicationController
       INNER JOIN statuses AS s2 ON c.user_id = s2.user_id AND s2.status = 'approved'
     ").first.avg_seconds_to_approve.to_i
 
-    hours = (avg_seconds / (60 * 60)) % 24
-    minutes = (avg_seconds / 60) % 60
-    seconds = avg_seconds % 60
+    hours, minutes, seconds = calculate_time_units(avg_seconds)
 
     hour_str = pluralize(hours, 'hour')
     minute_str = pluralize(minutes, 'minute')
@@ -70,14 +51,14 @@ class ClientesController < ApplicationController
       INNER JOIN statuses AS s ON c.user_id = s.user_id AND s.status = 'pending_kyc'
       INNER JOIN statuses AS s2 ON c.user_id = s2.user_id AND s2.status = 'approved'
     ").first.max_seconds_to_approve.to_i
-  
+
     days, hours, minutes, seconds = calculate_time_units(max_seconds)
-  
+
     day_str = pluralize(days, 'day')
     hour_str = pluralize(hours, 'hour')
     minute_str = pluralize(minutes, 'minute')
     second_str = pluralize(seconds, 'second')
-  
+
     @max_time = format("%s, %s, %s and %s", day_str, hour_str, minute_str, second_str)
   end
 
