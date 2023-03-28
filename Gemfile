@@ -44,6 +44,8 @@ gem "bootsnap", require: false
 
 gem 'kaminari'
 
+gem 'smarter_csv'
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 

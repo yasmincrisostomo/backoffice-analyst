@@ -1,9 +1,11 @@
-require 'csv'
+require 'smarter_csv'
 
-CSV.foreach('db/csv/clientes.csv', headers: true) do |row|
-  Cliente.create(user_id: row['user_id'], cnpj: row['cnpj'], nome_do_cliente: row['nome_do_cliente'])
+SmarterCSV.process('db/csv/clientes.csv', col_sep: ',') do |row|
+  Cliente.create(row)
 end
 
-CSV.foreach('db/csv/statuses.csv', headers: true) do |row|
-  Status.create(user_id: row['user_id'], status: row['status'], data_horario_do_status: row['data_horario_do_status'])
+SmarterCSV.process('db/csv/statuses.csv', col_sep: ',') do |row|
+  status = Status.new(row.first)
+  status.cliente = Cliente.find_by(user_id: row.first[:user_id])
+  status.save!
 end
