@@ -6,6 +6,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <%= javascript_include_tag 'search' %>
   </head>
 
   <body>
@@ -98,7 +102,7 @@
     <details>
         <summary>Why there is a negative number?</summary>
         <div>
-          
+          The minimum approval time was negative because there were some customers whose date and time of the status 'approved' occurred before the date and time of the status 'pending_kyc'. This indicates an inconsistency in the timestamps recorded in the status table.
         </div>
       </details>  
   </body>
