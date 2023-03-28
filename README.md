@@ -32,11 +32,15 @@ rails db:create
 ```
 rails db:migrate
 ```
-6. Start the application:
+6. Seed the database:
+```
+rails db:seed
+```
+7. Start the application:
 ```
 rails server
 ```
-7. Open your web browser and navigate to http://localhost:3000 to view the application.
+8. Open your web browser and navigate to http://localhost:3000 to view the application.
 
 #### **🔧 Results:**
 The application provides solutions to the tasks of the CloudWalk Backoffice Analyst Test, including:
