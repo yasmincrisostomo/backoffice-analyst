@@ -46,4 +46,4 @@ The application provides solutions to the tasks of the CloudWalk Backoffice Anal
 - The maximum time of approval.
 - The minimum time of approval.
 
-The results are displayed in an easy-to-read table that can be sorted and filtered.
+The results are displayed in an easy-to-read table that can be filtered by CNPJ.
