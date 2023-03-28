@@ -1,9 +1,7 @@
 class ClientesController < ApplicationController
-  include ActionView::Helpers::TextHelper
   before_action :set_results, only: [:index]
 
   def index
-    @results = set_results
     @avg_time = set_avg_time
     @max_time = set_max_time
     @min_time = set_min_time
@@ -85,6 +83,7 @@ class ClientesController < ApplicationController
     hours = (seconds / (60 * 60)) % 24
     minutes = (seconds / 60) % 60
     seconds = seconds % 60
+
     return days, hours, minutes, seconds
   end
 end
