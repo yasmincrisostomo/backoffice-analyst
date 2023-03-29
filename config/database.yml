@@ -11,8 +11,9 @@ test:
   database: backoffice_test
 
 production:
-  <<: *default
-  url: <%= ENV['DATABASE_URL'] %>
-  database: backoffice_production
-  username: backoffice
-  password: <%= ENV['BACKOFFICE_DATABASE_PASSWORD'] %>
+  adapter: postgresql
+  host: dpg-cghremak728s1bq4jjjg-a.oregon-postgres.render.com
+  port: 5432
+  database: backoffice_fg23
+  username: backoffice_fg23_user
+  password: 1NxxhTY0z0nqIH5tuTyRIeWzZYXZ0ouc
