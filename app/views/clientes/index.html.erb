@@ -76,7 +76,7 @@
               <% @results.each do |row| %>
                 <tr>
                   <td><%= row["cnpj"] %></td>
-                  <td><%= Time.parse(row["date_of_purchase"]).strftime("%d/%m/%Y %H:%M") %></td>
+                  <td><%= row["date_of_purchase"].strftime("%d/%m/%Y %H:%M:%S") %></td>
                   <td><%= "#{row["approval_time_hours"].to_i} hours #{row["approval_time_minutes"].to_i} minutes" %></td>
                 </tr>
               <% end %>
@@ -107,13 +107,5 @@
       </div>
 
     </main>
-
-    <div class="answer">
-    <details>
-        <summary>Why there is a negative number?</summary>
-        <div>
-          The minimum approval time was negative because there were some customers whose date and time of the status 'approved' occurred before the date and time of the status 'pending_kyc'. This indicates an inconsistency in the timestamps recorded in the status table.
-        </div>
-      </details>  
   </body>
 </html>
