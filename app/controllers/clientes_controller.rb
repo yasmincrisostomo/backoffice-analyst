@@ -15,8 +15,8 @@ class ClientesController < ApplicationController
   def set_results
     @query = params[:cnpj]
     @results = Cliente.select("clientes.cnpj, statuses_pending.data_horario_do_status as date_of_purchase,
-                            (strftime('%s', statuses_approved.data_horario_do_status) - strftime('%s', statuses_pending.data_horario_do_status))/3600 as approval_time_hours,
-                            ((strftime('%s', statuses_approved.data_horario_do_status) - strftime('%s', statuses_pending.data_horario_do_status)) % 3600)/60 as approval_time_minutes")
+                            (to_char('%s', statuses_approved.data_horario_do_status) - to_char('%s', statuses_pending.data_horario_do_status))/3600 as approval_time_hours,
+                            ((to_char('%s', statuses_approved.data_horario_do_status) - to_char('%s', statuses_pending.data_horario_do_status)) % 3600)/60 as approval_time_minutes")
                       .joins("JOIN statuses statuses_pending ON clientes.user_id = statuses_pending.user_id AND statuses_pending.status = 'pending_kyc' 
                               JOIN (SELECT user_id, MAX(data_horario_do_status) as max_data_horario_do_status FROM statuses WHERE status = 'approved' GROUP BY user_id) last_approved
                               ON clientes.user_id = last_approved.user_id
@@ -28,7 +28,7 @@ class ClientesController < ApplicationController
 
   def set_avg_time
     avg_seconds = Cliente.find_by_sql("
-      SELECT AVG(julianday(s2.data_horario_do_status) - julianday(s.data_horario_do_status)) * 24 * 60 * 60 AS avg_seconds_to_approve
+      SELECT AVG(to_timestamp(s2.data_horario_do_status) - to_timestamp(s.data_horario_do_status)) * 24 * 60 * 60 AS avg_seconds_to_approve
       FROM clientes AS c
       INNER JOIN statuses AS s ON c.user_id = s.user_id AND s.status = 'pending_kyc'
       INNER JOIN statuses AS s2 ON c.user_id = s2.user_id AND s2.status = 'approved'
@@ -45,7 +45,7 @@ class ClientesController < ApplicationController
 
   def set_max_time
     max_seconds = Cliente.find_by_sql("
-      SELECT MAX(julianday(s2.data_horario_do_status) - julianday(s.data_horario_do_status)) * 24 * 60 * 60 AS max_seconds_to_approve
+      SELECT MAX(to_timestamp(s2.data_horario_do_status) - to_timestamp(s.data_horario_do_status)) * 24 * 60 * 60 AS max_seconds_to_approve
       FROM clientes AS c
       INNER JOIN statuses AS s ON c.user_id = s.user_id AND s.status = 'pending_kyc'
       INNER JOIN statuses AS s2 ON c.user_id = s2.user_id AND s2.status = 'approved'
@@ -63,7 +63,7 @@ class ClientesController < ApplicationController
 
   def set_min_time
     min_seconds = Cliente.find_by_sql("
-      SELECT MIN(julianday(s2.data_horario_do_status) - julianday(s.data_horario_do_status)) * 24 * 60 * 60 AS min_seconds_to_approve
+      SELECT MIN(to_timestamp(s2.data_horario_do_status) - to_timestamp(s.data_horario_do_status)) * 24 * 60 * 60 AS min_seconds_to_approve
       FROM clientes AS c
       INNER JOIN statuses AS s ON c.user_id = s.user_id AND s.status = 'pending_kyc'
       INNER JOIN statuses AS s2 ON c.user_id = s2.user_id AND s2.status = 'approved'
