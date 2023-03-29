@@ -1,5 +1,4 @@
 class ClientesController < ApplicationController
-  include ActionView::Helpers::TextHelper
   before_action :set_results, only: [:index]
 
   def index
@@ -15,20 +14,20 @@ class ClientesController < ApplicationController
   def set_results
     @query = params[:cnpj]
     @results = Cliente.select("clientes.cnpj, statuses_pending.data_horario_do_status as date_of_purchase,
-                            (to_char('%s', statuses_approved.data_horario_do_status) - to_char('%s', statuses_pending.data_horario_do_status))/3600 as approval_time_hours,
-                            ((to_char('%s', statuses_approved.data_horario_do_status) - to_char('%s', statuses_pending.data_horario_do_status)) % 3600)/60 as approval_time_minutes")
+                            EXTRACT(epoch FROM (statuses_approved.data_horario_do_status - statuses_pending.data_horario_do_status))/3600 as approval_time_hours,
+                            (EXTRACT(epoch FROM (statuses_approved.data_horario_do_status - statuses_pending.data_horario_do_status)) % 3600)/60 as approval_time_minutes")
                       .joins("JOIN statuses statuses_pending ON clientes.user_id = statuses_pending.user_id AND statuses_pending.status = 'pending_kyc' 
                               JOIN (SELECT user_id, MAX(data_horario_do_status) as max_data_horario_do_status FROM statuses WHERE status = 'approved' GROUP BY user_id) last_approved
                               ON clientes.user_id = last_approved.user_id
                               JOIN statuses statuses_approved ON clientes.user_id = statuses_approved.user_id AND statuses_approved.status = 'approved' AND statuses_approved.data_horario_do_status = last_approved.max_data_horario_do_status")
-                      .where("clientes.cnpj LIKE '%#{@query}%'")
+                      .where("clientes.cnpj ILIKE '%#{@query}%'")
                       .order('statuses_pending.data_horario_do_status DESC')
                       .page(params[:page]).per(10)
   end
 
   def set_avg_time
     avg_seconds = Cliente.find_by_sql("
-      SELECT AVG(to_timestamp(s2.data_horario_do_status) - to_timestamp(s.data_horario_do_status)) * 24 * 60 * 60 AS avg_seconds_to_approve
+      SELECT AVG(EXTRACT(epoch FROM (s2.data_horario_do_status - s.data_horario_do_status))) * 24 * 60 * 60 AS avg_seconds_to_approve
       FROM clientes AS c
       INNER JOIN statuses AS s ON c.user_id = s.user_id AND s.status = 'pending_kyc'
       INNER JOIN statuses AS s2 ON c.user_id = s2.user_id AND s2.status = 'approved'
@@ -45,7 +44,7 @@ class ClientesController < ApplicationController
 
   def set_max_time
     max_seconds = Cliente.find_by_sql("
-      SELECT MAX(to_timestamp(s2.data_horario_do_status) - to_timestamp(s.data_horario_do_status)) * 24 * 60 * 60 AS max_seconds_to_approve
+      SELECT MAX(EXTRACT(epoch FROM (s2.data_horario_do_status - s.data_horario_do_status))) * 24 * 60 * 60 AS max_seconds_to_approve
       FROM clientes AS c
       INNER JOIN statuses AS s ON c.user_id = s.user_id AND s.status = 'pending_kyc'
       INNER JOIN statuses AS s2 ON c.user_id = s2.user_id AND s2.status = 'approved'
@@ -63,7 +62,7 @@ class ClientesController < ApplicationController
 
   def set_min_time
     min_seconds = Cliente.find_by_sql("
-      SELECT MIN(to_timestamp(s2.data_horario_do_status) - to_timestamp(s.data_horario_do_status)) * 24 * 60 * 60 AS min_seconds_to_approve
+      SELECT MIN(EXTRACT(epoch FROM (s2.data_horario_do_status - s.data_horario_do_status))) * 24 * 60 * 60 AS min_seconds_to_approve
       FROM clientes AS c
       INNER JOIN statuses AS s ON c.user_id = s.user_id AND s.status = 'pending_kyc'
       INNER JOIN statuses AS s2 ON c.user_id = s2.user_id AND s2.status = 'approved'
@@ -86,5 +85,9 @@ class ClientesController < ApplicationController
     seconds = seconds % 60
 
     return days, hours, minutes, seconds
+  end
+
+  def pluralize(value, singular_str)
+    "#{value} #{singular_str}#{'s' if value != 1}"
   end
 end
