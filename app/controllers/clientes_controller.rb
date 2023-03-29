@@ -1,4 +1,5 @@
 class ClientesController < ApplicationController
+  include ActionView::Helpers::TextHelper
   before_action :set_results, only: [:index]
 
   def index
