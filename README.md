@@ -7,10 +7,10 @@ Before running the application, you must have the following installed:
 
 - Ruby 3.1.3
 - Rails 7.0.4.3
-- SQLite
+- PostgreSQL
 
 #### **🔧 Installation:**
-To run the application, perform the following steps:
+To run the application on your machine, perform the following steps:
 
 1. Clone the repository:
 ```
