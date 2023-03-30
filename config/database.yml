@@ -12,8 +12,8 @@ test:
 
 production:
   adapter: postgresql
-  host: dpg-cghremak728s1bq4jjjg-a.oregon-postgres.render.com
+  host: dpg-cghrl782qv2772nmanpg-a
   port: 5432
-  database: backoffice_fg23
-  username: backoffice_fg23_user
-  password: 1NxxhTY0z0nqIH5tuTyRIeWzZYXZ0ouc
+  database: postgres_hxef
+  username: postgres_hxef_user
+  password: e6L7qm0AneQPrUFJntELQOiikBedeziC
