@@ -7,5 +7,5 @@ class Status < ApplicationRecord
     blocked: 'blocked',
     inactive: 'inactive'
   }
-  belongs_to :cliente, foreign_key: 'user_id'
+  belongs_to :cliente, primary_key: 'user_id', foreign_key: 'user_id'
 end
