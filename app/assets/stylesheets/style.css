@@ -171,33 +171,3 @@ span.time {
   color: #3c41f5;
   text-decoration: none;
 }
-
-.questions, .answer {
-  margin: 60px auto;
-  display: flex;
-  flex-direction: column;
-}
-
-.questions details {
-  background: #3C41F5;
-  color: #FFFFFF;
-  text-align: center;
-  border-radius: 8px;
-  padding: 32px;
-  margin: 20px auto;
-  width: 800px;
-}
-
-.questions details:first-of-type {
-  margin-top: 0;
-}
-
-.answer details {
-  background: rgb(16, 16, 16);
-  color: #FFFFFF;
-  text-align: center;
-  border-radius: 8px;
-  padding: 32px;
-  margin: 20px auto;
-  width: 800px;
-}
